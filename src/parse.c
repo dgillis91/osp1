@@ -47,6 +47,30 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
         case 'p':
             program_opts->is_display_permissions = 1;
             break;
+        case 'i':
+            program_opts->is_display_link_count = 1;
+            break;
+        case 'u':
+            program_opts->is_display_uid = 1;
+            break;
+        case 'g':
+            program_opts->is_display_gid = 1;
+            break;
+        case 's':
+            program_opts->is_display_size_in_bytes = 1;
+            break;
+        case 'd':
+            program_opts->is_display_last_modification = 1;
+            break;
+        case 'l':
+            program_opts->is_display_all = 1;
+            program_opts->is_display_filetype = 1;
+            program_opts->is_display_permissions = 1;
+            program_opts->is_display_link_count = 1;
+            program_opts->is_display_uid = 1;
+            program_opts->is_display_gid = 1;
+            program_opts->is_display_size_in_bytes = 1;
+            break;
        }
     }
 }
