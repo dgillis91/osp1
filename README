@@ -2,7 +2,6 @@
 
 ## To Do
 - Very obviously, implement all the code
-- Add my standard Makefile. It's on my server.
 - Add books to references
 - Add error handling to the options. That is, validate combinations & params.
 - Add the additional options
