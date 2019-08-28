@@ -9,7 +9,7 @@
 int main(int argc, char* argv[]) {
     program_options_t* options = malloc_default_program_options();
     if (options == NULL) {
-        fprintf(stderr, "%s: Error: %s", argv[0], strerror(errno));
+        fprintf(stderr, "%s: Error: %s\n", argv[0], strerror(errno));
         return EXIT_FAILURE;
     }
     parse_options(argc, argv, options);
