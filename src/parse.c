@@ -38,6 +38,15 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
         case 'I':
             program_opts->space_count_indentation = atoi(optarg);
             break;
+        case 'L':
+            program_opts->is_follow_links = 1;
+            break;
+        case 't':
+            program_opts->is_display_filetype = 1;
+            break;
+        case 'p':
+            program_opts->is_display_permissions = 1;
+            break;
        }
     }
 }
