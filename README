@@ -11,6 +11,10 @@
 - Add error handling in the parse function for atoi. Possibly move to
  using a method that can detect errors. Need to see if available on hoare.
 
+## Notes:
+- I don't really need to pass around a reference to the options struct. I could pass
+ it back by value. It's not that much data, and only one should be created.
+
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
 - [getopt man page](http://man7.org/linux/man-pages/man3/getopt.3.html)
