@@ -9,6 +9,7 @@
 - Implement `display_help_and_terminate`
 - Add error handling in the parse function for atoi. Possibly move to
  using a method that can detect errors. Need to see if available on hoare.
+- Add rules to makefile for building tests
 
 ## Notes:
 - I don't really need to pass around a reference to the options struct. I could pass
