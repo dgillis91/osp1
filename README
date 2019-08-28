@@ -7,7 +7,12 @@
 - Add error handling to the options. That is, validate combinations & params.
 - Add the additional options
 - Add error handling for invalid options in parse_options
+- Formalize references
 
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
 - [getopt man page](http://man7.org/linux/man-pages/man3/getopt.3.html)
+- "Understanding the Linux Kernel" Daniel P. Bovet & Marco Cesati
+- "UNIX Systems Programming. Communication, Concurrency, and Threads" Robbins & Robbins
+- "Linux System Programming" Robert Love
+- "Operating Systems" William Stallings
