@@ -1,10 +1,6 @@
 #ifndef _PARSE_H
 #define _PARSE_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
 
 typedef struct program_options {
     int is_print_help;
