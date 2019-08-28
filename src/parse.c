@@ -3,10 +3,12 @@
 #include <unistd.h>
 #include "../include/parse.h"
 
+
 void print_help_and_terminate() {
     fprintf(stdout, "This is a help message\n");
     exit(EXIT_SUCCESS);
 }
+
 
 program_options_t* malloc_default_program_options() {
     program_options_t* program_opts = (program_options_t*) malloc(sizeof(program_options_t));
