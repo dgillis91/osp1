@@ -49,6 +49,9 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
      * - http://man7.org/linux/man-pages/man3/getopt.3.html
     */
     int current_option;
+    // As per the man page, calling `getopt` parses the arguments from argv,
+    // as specified in the third param, `optstring`. When there are no option
+    // characters left, `getopt` returns -1.
     while ((current_option = getopt(argc, argv, "hI:Ltpiugsdl")) != -1) {
        switch (current_option) {
         case 'h':
