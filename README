@@ -6,7 +6,6 @@
 - Add books to references
 - Add error handling to the options. That is, validate combinations & params.
 - Add the additional options
-- Add error handling for invalid options in parse_options
 - Formalize references
 - Implement `display_help_and_terminate`
 - Add error handling in the parse function for atoi. Possibly move to
