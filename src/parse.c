@@ -21,6 +21,10 @@ program_options_t* malloc_default_program_options() {
      *           Must be `free`d by the caller. 
     */
     program_options_t* program_opts = (program_options_t*) malloc(sizeof(program_options_t));
+    // Recall that malloc return null for failure and sets errno to ENOMEM.
+    if (program_opts == NULL) {
+        return NULL;
+    }
     program_opts->is_print_help = 0;
     program_opts->space_count_indentation = 4;
     program_opts->is_follow_links = 0;
