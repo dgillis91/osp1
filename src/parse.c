@@ -48,6 +48,8 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
      * - https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
      * - http://man7.org/linux/man-pages/man3/getopt.3.html
     */
+    // Set this so that `getopt` doesn't write error messages.
+    opterr = 0;
     int current_option;
     // As per the man page, calling `getopt` parses the arguments from argv,
     // as specified in the third param, `optstring`. When there are no option
@@ -92,6 +94,22 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
             program_opts->is_display_uid = 1;
             program_opts->is_display_gid = 1;
             program_opts->is_display_size_in_bytes = 1;
+            break;
+        // From the man page:
+        // By default, getopt() prints an error message on standard error,
+        // places the erroneous option character in optopt, and returns '?'
+        // as the function result.
+        // Note that `getopt` sets a global `optopt` with the option character.
+        case '?':
+            // If the error is for not having an arg with `I` . . . 
+            if (optopt == 'I') {
+                fprintf(stderr, "%s: Error: Argument `I` requires an argument\n", argv[0]);
+            // Unknown opt
+            } else {
+                fprintf(stderr, "%s: Error: Unkown option character -%c\n", argv[0], optopt);
+            }
+            // In either case, terminate.
+            print_help_and_terminate();
             break;
        }
     }
