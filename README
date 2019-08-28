@@ -9,6 +9,8 @@
 - Add error handling for invalid options in parse_options
 - Formalize references
 - Implement `display_help_and_terminate`
+- Add error handling in the parse function for atoi. Possibly move to
+ using a method that can detect errors. Need to see if available on hoare.
 
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
