@@ -8,6 +8,7 @@
 - Add the additional options
 - Add error handling for invalid options in parse_options
 - Formalize references
+- Implement `display_help_and_terminate`
 
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
