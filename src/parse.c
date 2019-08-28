@@ -11,6 +11,15 @@ void print_help_and_terminate() {
 
 
 program_options_t* malloc_default_program_options() {
+    /* Allocate a struct with the default command line arguments.
+     * Note that allocating INSIDE of a function is not necessarily
+     * good form. There is always the possibility that the caller
+     * doesn't realize malloc is called in the function, and a memory
+     * leak follows. That said, I find it easier to read and follow.
+     * So, the function has been named `malloc_...` for added verbosity.
+     * @Returns: A dynamically allocated struct with the program options.
+     *           Must be `free`d by the caller. 
+    */
     program_options_t* program_opts = (program_options_t*) malloc(sizeof(program_options_t));
     program_opts->is_print_help = 0;
     program_opts->space_count_indentation = 4;
@@ -28,7 +37,17 @@ program_options_t* malloc_default_program_options() {
 
 
 void parse_options(int argc, char* argv[], program_options_t* program_opts) {
-    // Returns -1 for stop, -2 for error. Will write via perror, etc.
+    /* Parse the command line options and modify the passed in `program_opts`
+     * with them. 
+     * @Params:
+     * * Note argc and argv come from the main method.
+     * - argc: Count of arguments from the program.
+     * - argv: Vector of arguments.
+     * - program_opts: Pointer to a program_options_t. Is modified.
+     * @Reference: 
+     * - https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+     * - http://man7.org/linux/man-pages/man3/getopt.3.html
+    */
     int current_option;
     while ((current_option = getopt(argc, argv, "hI:Ltpiugsdl")) != -1) {
        switch (current_option) {
