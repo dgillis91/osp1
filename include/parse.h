@@ -23,7 +23,7 @@ program_options_t* malloc_default_program_options();
 void parse_options(int, char**, program_options_t*);
 
 
-void print_help_and_terminate();
+void print_help_and_terminate(char**);
 
 
 #endif

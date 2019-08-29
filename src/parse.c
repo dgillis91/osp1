@@ -4,8 +4,20 @@
 #include "../include/parse.h"
 
 
-void print_help_and_terminate() {
-    fprintf(stdout, "This is a help message\n");
+void print_help_and_terminate(char* argv[]) {
+    printf("Usage: %s [-h] [-I n] [-L -d -g -i -p -s -t -u | -l] [dirname]\n"
+           "For: \n"
+           "    -h: Display help and exit.\n"
+           "    -I: Number of spaces to use for indent.\n"
+           "    -L: Follow sym links. Default false.\n"
+           "    -d: Print information on file type.\n", argv[0]);
+    printf("    -g: Print the GID for the file.\n"
+           "    -i: Print the number of links in the inode table.\n"
+           "    -p: Print permission bits.\n"
+           "    -s: Print the size in bytes.\n"
+           "    -t: Print information on file type.\n");
+    printf("    -u: Print the UID of the file.\n"
+           "    -l: Same as specifying -tpiugs.\n");
     exit(EXIT_SUCCESS);
 }
 
@@ -61,7 +73,7 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
     while ((current_option = getopt(argc, argv, "hI:Ltpiugsdl")) != -1) {
        switch (current_option) {
         case 'h':
-            print_help_and_terminate();
+            print_help_and_terminate(argv);
             break;
         case 'I':
             program_opts->space_count_indentation = atoi(optarg);
@@ -113,7 +125,7 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
                 fprintf(stderr, "%s: Error: Unkown option character -%c\n", argv[0], optopt);
             }
             // In either case, terminate.
-            print_help_and_terminate();
+            print_help_and_terminate(argv);
             break;
        }
     }
