@@ -53,12 +53,14 @@ int main(int argc, char* argv[]) {
     // The readdir() function returns a pointer to the next
     // directory entry. It returns NULL upon reaching the
     // end of the directory or on error.
+    // Let's add some stuff to the output to dooo learning.
     while ((direntp = readdir(dirp)) != NULL) {
-       printf("%s\n", direntp->d_name);
+        printf("%s:%3d\n", direntp->d_name,
+               direntp->d_type);
     }
 
     // Attempt to close the directory multiple times, if
-    // interrupted. 
+    // interrupted.
     while ((closedir(dirp) == -1) && (errno == EINTR)) ;
 
     return EXIT_SUCCESS;
