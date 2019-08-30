@@ -1,17 +1,18 @@
-#include "../include/statq.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include "../include/statq.h"
 
 
-int malloc_new_node(stat_t* filestat) {
-    stat_q_t* new_node = (stat_q_t*) malloc(sizeof(stat_q_t));
+stat_q_node_t* malloc_new_node(stat_t* filestat) {
+    stat_q_node_t* new_node = (stat_q_node_t*) malloc(sizeof(stat_q_node_t));
     if (new_node == NULL) {
-        return -1;
+        return NULL;
     }
     new_node->next = NULL;
-    new_node->file_stat = file_stat;
-    return 0;
+    new_node->file_stat = filestat;
+    return new_node;
 }
 
 
@@ -21,12 +22,43 @@ void enqueue(stat_q_t* queue, stat_t* filestat) {
      * attempt to access queue nodes. Doing so will
      * likely lead to memory leaks.
      */
-    stat_q_node_t* new_node malloc_new_node(filestat);
+    stat_q_node_t* new_node = malloc_new_node(filestat);
     // Empty - enqueue at head.
-    if (queue->head == NULL) {
+    if (queue->tail == NULL) {
         queue->head = queue->tail = new_node;
         return;
     }
-    new_node->next = queue->head;
-    queue->head = new_node;
+    queue->tail->next = new_node;
+    queue->tail = new_node;
+}
+
+
+stat_t* peek(stat_q_t* queue) {
+    return queue->head->file_stat;
+}
+
+
+stat_t* dequeue(stat_q_t* queue) {
+    // If empty
+    if (queue->tail == NULL) {
+        return NULL;
+    }
+    // Get the head node so we can return it
+    stat_q_node_t* node = queue->head;
+    // Move the head pointer to the next node.
+    queue->head = node->next;
+    // Get the file_stat out of the node so the
+    // node can be freed.
+    stat_t* filestat = node->file_stat;
+    // Free the node.
+    free(node);
+    if (queue->head == NULL) {
+        queue->tail = NULL;
+    }
+    return filestat;
+}
+
+
+int is_empty(stat_q_t* queue) {
+    return (queue->head == NULL);
 }
