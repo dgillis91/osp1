@@ -9,6 +9,9 @@
 - Add error handling in the parse function for atoi. Possibly move to
  using a method that can detect errors. Need to see if available on hoare.
 - Add rules to makefile for building tests
+- Make a struct that HAS-A stat_t. This will make it possible to get all of
+ the data back for printing, because stat doesn't have file name.
+- After ^, update the queue to use this struct. 
 
 ## Notes:
 - I don't really need to pass around a reference to the options struct. I could pass
