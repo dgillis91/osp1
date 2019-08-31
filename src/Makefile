@@ -4,10 +4,10 @@ CFLAGS=-I$(IDIR)
 
 ODIR=../obj
 
-_DEPS = parse.h
+_DEPS = parse.h filedet.h statq.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = dt.o parse.o 
+_OBJ = dt.o parse.o filedet.o statq.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 
