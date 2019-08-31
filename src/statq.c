@@ -5,24 +5,32 @@
 #include "../include/statq.h"
 
 
-stat_q_node_t* malloc_new_node(stat_t* filestat) {
-    stat_q_node_t* new_node = (stat_q_node_t*) malloc(sizeof(stat_q_node_t));
+stat_queue_node_t* malloc_new_node(stat_t* filestat, dirent_t* direntp) {
+    stat_queue_node_t* new_node = (stat_queue_node_t*) malloc(sizeof(stat_queue_node_t));
     if (new_node == NULL) {
         return NULL;
     }
     new_node->next = NULL;
     new_node->file_stat = filestat;
+    new_node->direntp = direntp;
     return new_node;
 }
 
 
-void enqueue(stat_q_t* queue, stat_t* filestat) {
+void free_stat_queue_node(stat_queue_node_t* node) {
+    /* Assumes node allocated via `malloc`. Note that direntp is not allocated.*/
+    free(node->file_stat);
+    free(node);
+}
+
+
+void enqueue(stat_queue_t* queue, stat_t* filestat, dirent_t* direntp) {
     /* Enqueue a stat struct. Note that we use a node
      * structure. Programmers should never directly
      * attempt to access queue nodes. Doing so will
      * likely lead to memory leaks.
      */
-    stat_q_node_t* new_node = malloc_new_node(filestat);
+    stat_queue_node_t* new_node = malloc_new_node(filestat, direntp);
     // Empty - enqueue at head.
     if (queue->tail == NULL) {
         queue->head = queue->tail = new_node;
@@ -33,32 +41,27 @@ void enqueue(stat_q_t* queue, stat_t* filestat) {
 }
 
 
-stat_t* peek(stat_q_t* queue) {
-    return queue->head->file_stat;
+stat_queue_node_t* peek(stat_queue_t* queue) {
+    return queue->head;
 }
 
 
-stat_t* dequeue(stat_q_t* queue) {
+stat_queue_node_t* dequeue(stat_queue_t* queue) {
     // If empty
     if (queue->tail == NULL) {
         return NULL;
     }
     // Get the head node so we can return it
-    stat_q_node_t* node = queue->head;
+    stat_queue_node_t* node = queue->head;
     // Move the head pointer to the next node.
     queue->head = node->next;
-    // Get the file_stat out of the node so the
-    // node can be freed.
-    stat_t* filestat = node->file_stat;
-    // Free the node.
-    free(node);
     if (queue->head == NULL) {
         queue->tail = NULL;
     }
-    return filestat;
+    return node;
 }
 
 
-int is_empty(stat_q_t* queue) {
+int is_empty(stat_queue_t* queue) {
     return (queue->head == NULL);
 }
