@@ -49,6 +49,7 @@ int main(int argc, char* argv[]) {
         queue_node = dequeue(queue);
         printf("test\n");
         printf("%d | \n", (int) queue_node->file_stat->st_size);
+        free_stat_queue_node(queue_node);
     }
     
     // Attempt to close the directory multiple times, if

@@ -25,6 +25,9 @@ typedef struct stat_queue {
 stat_queue_node_t* malloc_new_node(stat_t*, dirent_t*);
 
 
+void free_stat_queue_node(stat_queue_node_t*);
+
+
 void enqueue(stat_queue_t*, stat_t*, dirent_t*);
 
 
