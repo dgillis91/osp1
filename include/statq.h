@@ -13,24 +13,24 @@ typedef struct stat_queue_node {
 } stat_queue_node_t;
 
 
-typedef struct stat_q {
+typedef struct stat_queue {
     stat_queue_node_t* head;
     stat_queue_node_t* tail;
-} stat_q_t;
+} stat_queue_t;
 
 
 stat_queue_node_t* malloc_new_node(stat_t*);
 
 
-void enqueue(stat_q_t*, stat_t*);
+void enqueue(stat_queue_t*, stat_t*);
 
 
-stat_t* peek(stat_q_t*);
+stat_t* peek(stat_queue_t*);
 
 
-stat_t* dequeue(stat_q_t*);
+stat_t* dequeue(stat_queue_t*);
 
 
-int is_empty(stat_q_t*);
+int is_empty(stat_queue_t*);
 
 #endif

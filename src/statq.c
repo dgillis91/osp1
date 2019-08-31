@@ -16,7 +16,7 @@ stat_queue_node_t* malloc_new_node(stat_t* filestat) {
 }
 
 
-void enqueue(stat_q_t* queue, stat_t* filestat) {
+void enqueue(stat_queue_t* queue, stat_t* filestat) {
     /* Enqueue a stat struct. Note that we use a node
      * structure. Programmers should never directly
      * attempt to access queue nodes. Doing so will
@@ -33,12 +33,12 @@ void enqueue(stat_q_t* queue, stat_t* filestat) {
 }
 
 
-stat_t* peek(stat_q_t* queue) {
+stat_t* peek(stat_queue_t* queue) {
     return queue->head->file_stat;
 }
 
 
-stat_t* dequeue(stat_q_t* queue) {
+stat_t* dequeue(stat_queue_t* queue) {
     // If empty
     if (queue->tail == NULL) {
         return NULL;
@@ -59,6 +59,6 @@ stat_t* dequeue(stat_q_t* queue) {
 }
 
 
-int is_empty(stat_q_t* queue) {
+int is_empty(stat_queue_t* queue) {
     return (queue->head == NULL);
 }
