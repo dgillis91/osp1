@@ -5,8 +5,8 @@
 #include "../include/statq.h"
 
 
-stat_q_node_t* malloc_new_node(stat_t* filestat) {
-    stat_q_node_t* new_node = (stat_q_node_t*) malloc(sizeof(stat_q_node_t));
+stat_queue_node_t* malloc_new_node(stat_t* filestat) {
+    stat_queue_node_t* new_node = (stat_queue_node_t*) malloc(sizeof(stat_queue_node_t));
     if (new_node == NULL) {
         return NULL;
     }
@@ -22,7 +22,7 @@ void enqueue(stat_q_t* queue, stat_t* filestat) {
      * attempt to access queue nodes. Doing so will
      * likely lead to memory leaks.
      */
-    stat_q_node_t* new_node = malloc_new_node(filestat);
+    stat_queue_node_t* new_node = malloc_new_node(filestat);
     // Empty - enqueue at head.
     if (queue->tail == NULL) {
         queue->head = queue->tail = new_node;
@@ -44,7 +44,7 @@ stat_t* dequeue(stat_q_t* queue) {
         return NULL;
     }
     // Get the head node so we can return it
-    stat_q_node_t* node = queue->head;
+    stat_queue_node_t* node = queue->head;
     // Move the head pointer to the next node.
     queue->head = node->next;
     // Get the file_stat out of the node so the

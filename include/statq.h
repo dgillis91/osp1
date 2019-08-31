@@ -7,19 +7,19 @@
 
 typedef struct stat stat_t;
 
-typedef struct stat_q_node {
-    struct stat_q_node* next;
+typedef struct stat_queue_node {
+    struct stat_queue_node* next;
     stat_t* file_stat;
-} stat_q_node_t;
+} stat_queue_node_t;
 
 
 typedef struct stat_q {
-    stat_q_node_t* head;
-    stat_q_node_t* tail;
+    stat_queue_node_t* head;
+    stat_queue_node_t* tail;
 } stat_q_t;
 
 
-stat_q_node_t* malloc_new_node(stat_t*);
+stat_queue_node_t* malloc_new_node(stat_t*);
 
 
 void enqueue(stat_q_t*, stat_t*);
