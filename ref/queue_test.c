@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     // directories in a directory.
     DIR* dirp;
 
-    stat_q_t* queue = (stat_q_t*) malloc(sizeof(stat_q_t));
+    stat_queue_t* queue = (stat_queue_t*) malloc(sizeof(stat_queue_t));
     queue->head = queue->tail = NULL;
     
     if (argc != 2) {
@@ -41,14 +41,14 @@ int main(int argc, char* argv[]) {
                direntp->d_type);
         file_stat = (stat_t*) malloc(sizeof(stat_t));
         stat(direntp->d_name, file_stat);
-        enqueue(queue, file_stat);
+        enqueue(queue, file_stat, direntp);
     }
     
+    stat_queue_node_t* queue_node;
     while (!is_empty(queue)) {
-        file_stat = dequeue(queue);
+        queue_node = dequeue(queue);
         printf("test\n");
-        printf("%d | \n", (int) file_stat->st_size);
-        free(file_stat);
+        printf("%d | \n", (int) queue_node->file_stat->st_size);
     }
     
     // Attempt to close the directory multiple times, if
