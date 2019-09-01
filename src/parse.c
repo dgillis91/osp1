@@ -53,6 +53,17 @@ program_options_t* malloc_default_program_options() {
     return program_opts;
 }
 
+void free_program_options(program_options_t* program_opts) {
+    /* Because the options are going to be dynamically allocated,
+    ** and they have a dynamically allocated 'string', we create
+    ** a method to clean up the allocated memory. 
+    ** @Param:
+    **  - program_opts: pointer to a program_options structure.
+    */
+    free(program_opts->run_on);
+    free(program_opts);
+}
+
 
 void parse_options(int argc, char* argv[], program_options_t* program_opts) {
     /* Parse the command line options and modify the passed in `program_opts`

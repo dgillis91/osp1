@@ -25,6 +25,9 @@ typedef struct program_options {
 program_options_t* malloc_default_program_options();
 
 
+void free_program_options(program_options_t*);
+
+
 void parse_options(int, char**, program_options_t*);
 
 
