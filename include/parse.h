@@ -1,6 +1,9 @@
 #ifndef _PARSE_H
 #define _PARSE_H
 
+// As it turns out, PATH_MAX is complex across systems. So,
+// we are just going to make an assumption. 
+#define PROGRAM_OPTIONS_MAX_PATH_LENGTH 4096
 
 typedef struct program_options {
     int is_print_help;
@@ -14,6 +17,8 @@ typedef struct program_options {
     int is_display_size_in_bytes; // Not clear on this requirement
     int is_display_last_modification;
     int is_display_all;
+    // Max length on most systems. TODO: Look this up.
+    char* run_on; 
 } program_options_t;
 
 

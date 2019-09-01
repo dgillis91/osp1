@@ -48,6 +48,8 @@ program_options_t* malloc_default_program_options() {
     program_opts->is_display_size_in_bytes = 0;
     program_opts->is_display_last_modification = 0;
     program_opts->is_display_all = 0;
+    program_opts->run_on = malloc(sizeof(char) * PROGRAM_OPTIONS_MAX_PATH_LENGTH);
+    program_opts->run_on = ".";
     return program_opts;
 }
 
@@ -119,7 +121,7 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
         case '?':
             // If the error is for not having an arg with `I` . . . 
             if (optopt == 'I') {
-                fprintf(stderr, "%s: Error: Argument `I` requires an argument\n", argv[0]);
+                fprintf(stderr, "%s: Error: Argument `I` requires an integer parameter\n", argv[0]);
             // Unknown opt
             } else {
                 fprintf(stderr, "%s: Error: Unkown option character -%c\n", argv[0], optopt);
@@ -128,6 +130,11 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
             print_help_and_terminate(argv);
             break;
        }
+    }
+
+    // Parse the path out. 
+    if (argv[optind] != NULL) {
+        program_opts->run_on = argv[optind];
     }
 }
 
