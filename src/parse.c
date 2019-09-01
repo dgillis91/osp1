@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "../include/parse.h"
 
 
@@ -48,20 +49,20 @@ program_options_t* malloc_default_program_options() {
     program_opts->is_display_size_in_bytes = 0;
     program_opts->is_display_last_modification = 0;
     program_opts->is_display_all = 0;
-    program_opts->run_on = malloc(sizeof(char) * PROGRAM_OPTIONS_MAX_PATH_LENGTH);
-    program_opts->run_on = ".";
+    program_opts->run_on = NULL;
     return program_opts;
 }
 
-void free_program_options(program_options_t* program_opts) {
+void free_program_options(program_options_t** program_opts) {
     /* Because the options are going to be dynamically allocated,
     ** and they have a dynamically allocated 'string', we create
     ** a method to clean up the allocated memory. 
     ** @Param:
     **  - program_opts: pointer to a program_options structure.
     */
-    free(program_opts->run_on);
-    free(program_opts);
+    free((*program_opts)->run_on);
+    free(*program_opts);
+    *program_opts = NULL;
 }
 
 
@@ -144,8 +145,18 @@ void parse_options(int argc, char* argv[], program_options_t* program_opts) {
     }
 
     // Parse the path out. 
+    // We also need to allocate the memory here. Remember to copy the
+    // data into your char*. Otherwise you are assigning the memory location
+    // of argv[optind] and you will spend five hours being a fool. 
+    int path_length = 0;
     if (argv[optind] != NULL) {
-        program_opts->run_on = argv[optind];
+        path_length = strlen(argv[optind]);
+        program_opts->run_on = (char*) malloc(sizeof(char) * path_length);
+        strcpy(program_opts->run_on, argv[optind]);
+    } else {
+        path_length = strlen(".");
+        program_opts->run_on = (char*) malloc(sizeof(char) * path_length);
+        strcpy(program_opts->run_on, ".");
     }
 }
 

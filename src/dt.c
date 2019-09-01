@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     printf("opt: %s\n", argv[optind]);
 
     // Be a good neighbor.
-    free_program_options(options);
+    free_program_options(&options);
 
     return EXIT_SUCCESS;
 }
