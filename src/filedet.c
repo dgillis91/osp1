@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <pwd.h>
 #include <grp.h>
-#include <uuid/uuid.h>
 
 
 #define MODE_COUNT 9
