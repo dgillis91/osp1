@@ -34,6 +34,12 @@ size is larger than 1M, indicate the size in MB with a suffix M; if the size is 
 
 ## Notes:
 - There is one known issue with the output. Currently, any base level directory name messes up the output.
+- While the program_options is a clean way to pass a ton of data around at once, it leads to tight coupling.
+ It would likely be better to pass around individual arguments instead of a whole struct. Note that this *can*, 
+ be done while using program_opts. It will just start to look like you are writing python with tons of arguments.
+ I also don't know if C supports default args. I can look that up later. 
+- There is a decent amount of refactoring that can be done here. This would make the code easier to read (among other things). 
+ Notably, `print_tree_entry` can be broken into **at least** two methods. 
 
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
