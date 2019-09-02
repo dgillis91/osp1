@@ -20,13 +20,19 @@ char RWX_CHAR[RWX_CHAR_COUNT] = {'r', 'w', 'x'};
 
 void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, int indent, program_options_t* p_options) {
     char permissions[11];
+    char link_count[4];
     if (p_options->is_display_permissions) {
         file_access_string(file_stat, permissions);
     } else {
         strcpy(permissions, "");
     }
-    printf("%*c%s %s\n", indent, ' ', directory_entry->d_name, 
-           permissions);
+    if (p_options->is_display_link_count) {
+        sprintf(link_count, "%d", file_stat->st_nlink);
+    } else {
+        strcpy(link_count, "");
+    }
+    printf("%*c%s %s %s\n", indent, ' ', directory_entry->d_name, 
+           permissions, link_count);
 }
 
 
