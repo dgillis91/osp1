@@ -69,7 +69,7 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
     } else {
         strcpy(username, "");
     }
-    
+
     // Group ID
     struct group* grp;
     if (p_options->is_display_gid) {
@@ -110,9 +110,6 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
     int file_pad_length = 100 - filename_length - indent;
     pad_string = malloc(sizeof(char) * file_pad_length);
     snprintf(pad_string, file_pad_length, "%*c", file_pad_length, ' ');
-
-    //char filename_string[101];
-    //snprintf(filename_string, 100, "%s%*c", directory_entry->d_name, file_pad_length, ' ');
 
     printf("%*c%s %s %s\n", indent, ' ', directory_entry->d_name, pad_string, detail_string);
     free(pad_string);
