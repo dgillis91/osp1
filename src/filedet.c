@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <time.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -13,6 +14,8 @@
 #define G_SIZE 1000000000
 #define M_SIZE 1000000
 #define K_SIZE 1000
+
+#define C_TIME_LENGTH 26
 
 #define MODE_COUNT 9
 mode_t MODES[MODE_COUNT] = {
@@ -31,6 +34,7 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
     char username[50];
     char groupname[50];
     char file_size[15];
+    char time_string[C_TIME_LENGTH];
 
     // Permissions
     if (p_options->is_display_permissions) {
@@ -70,8 +74,17 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
         strcpy(file_size, "");
     }
 
-    printf("%*c%s %s %s %s %s %s\n", indent, ' ', directory_entry->d_name, 
-           permissions, link_count, username, groupname, file_size);
+    // Last modified
+    if (p_options->is_display_last_modification) {
+        strncpy(time_string, ctime(&file_stat->st_mtime), C_TIME_LENGTH - 1);
+        // Remove the newline
+        time_string[C_TIME_LENGTH - 2] = 0;
+    } else {
+        strcpy(time_string, "");
+    }
+
+    printf("%*c%s %s %s %s %s %s %s\n", indent, ' ', directory_entry->d_name, 
+           permissions, link_count, username, groupname, file_size, time_string);
 }
 
 
