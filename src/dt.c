@@ -66,7 +66,7 @@ int list_directory(char* directory, program_options_t* program_options, int inde
     /* Method to print the directory tree.*/
     DIR* directory_stream;
     struct dirent* directory_entry;
-    struct stat file_stat;
+   // struct stat file_stat;
 
     if ((directory_stream = opendir(directory)) == NULL) {
        return -1;
@@ -74,7 +74,8 @@ int list_directory(char* directory, program_options_t* program_options, int inde
 
     // !!! TODO: hoare doesn't support checking the file type via d_type. Need to stat.
     while ((directory_entry = readdir(directory_stream)) != NULL) {
-        if (stat(directory, &file_stat) == -1) {
+        struct stat file_stat;
+        if (stat(directory_entry->d_name, &file_stat) == -1) {
             return FILE_STAT_ERROR;
         }
         if (S_ISDIR(file_stat.st_mode)) {
