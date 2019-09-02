@@ -12,12 +12,15 @@
 #include <grp.h>
 
 
+// Constants for # of bytes in a Gig, Meg, and KB. 
 #define G_SIZE 1000000000
 #define M_SIZE 1000000
 #define K_SIZE 1000
 
+// Length of the time string. 
 #define C_TIME_LENGTH 26
 
+// Allows file permissions to be created with fewer LOC.
 #define MODE_COUNT 9
 mode_t MODES[MODE_COUNT] = {
     S_IRUSR, S_IWUSR, S_IXUSR,
@@ -30,6 +33,13 @@ char RWX_CHAR[RWX_CHAR_COUNT] = {'r', 'w', 'x'};
 
 
 void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, int indent, program_options_t* p_options) {
+    /* Method to print the entry in the directory.
+    ** @Params:
+    **  - directory_entry: A pointer to the file in the directory to print.
+    **  - file_stat: Details on the file.
+    **  - indent: Number of spaces (' ') to indent this entry.
+    **  - p_options: Struct created when parsing command line args.
+    **/
     char permissions[11];
     char link_count[4];
     char username[50];
@@ -59,6 +69,7 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
     } else {
         strcpy(username, "");
     }
+    
     // Group ID
     struct group* grp;
     if (p_options->is_display_gid) {
