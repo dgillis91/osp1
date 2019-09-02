@@ -10,6 +10,10 @@
 #include <grp.h>
 
 
+#define G_SIZE 1000000000
+#define M_SIZE 1000000
+#define K_SIZE 1000
+
 #define MODE_COUNT 9
 mode_t MODES[MODE_COUNT] = {
     S_IRUSR, S_IWUSR, S_IXUSR,
@@ -26,6 +30,7 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
     char link_count[4];
     char username[50];
     char groupname[50];
+    char file_size[15];
 
     // Permissions
     if (p_options->is_display_permissions) {
@@ -58,8 +63,15 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
         strcpy(groupname, "");
     }
 
-    printf("%*c%s %s %s %s %s\n", indent, ' ', directory_entry->d_name, 
-           permissions, link_count, username, groupname);
+    // File size
+    if (p_options->is_display_size_in_bytes) {
+        pretty_file_size(file_size, (long) file_stat->st_size);
+    } else {
+        strcpy(file_size, "");
+    }
+
+    printf("%*c%s %s %s %s %s %s\n", indent, ' ', directory_entry->d_name, 
+           permissions, link_count, username, groupname, file_size);
 }
 
 
@@ -83,4 +95,31 @@ void file_access_string(struct stat* file_stat, char* buffer) {
         }
     }
     buffer[10] = '\0';
+}
+
+
+void pretty_file_size(char* buffer, long file_size) {
+    char post_fix[2];
+    long size_scaler;
+    double size;
+    // Gig
+    if (file_size > G_SIZE) {
+        strcpy(post_fix, "G");
+        size_scaler = G_SIZE;
+    // Megs
+    } else if (file_size > M_SIZE) {
+        strcpy(post_fix, "M");
+        size_scaler = M_SIZE;
+    // KB
+    } else if (file_size > K_SIZE) {
+        strcpy(post_fix, "K");
+        size_scaler = K_SIZE;
+    } else {
+        strcpy(post_fix, "");
+        size_scaler = 1;
+    }
+
+    size = file_size / (double) size_scaler;
+
+    snprintf(buffer, 15, "%7.2f %s", size, post_fix);
 }
