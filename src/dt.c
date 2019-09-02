@@ -40,10 +40,12 @@ int main(int argc, char* argv[]) {
     if ((list_result = list_directory(options->run_on, options, 0)) != 0) {
         free_program_options(&options);
         if (list_result == DIRECTORY_OPEN_ERROR) {
-            fprintf(stderr, "%s: Failed to open %s\n", argv[0], options->run_on);
+            fprintf(stderr, "%s: Failed to open %s ", argv[0], options->run_on);
+            perror("");
         }
         else if (list_result == FILE_STAT_ERROR) {
             fprintf(stderr, "%s: Failed to stat file ", argv[0]);
+            perror("");
         }
         return EXIT_FAILURE;
     }
@@ -66,28 +68,32 @@ int list_directory(char* directory, program_options_t* program_options, int inde
     /* Method to print the directory tree.*/
     DIR* directory_stream;
     struct dirent* directory_entry;
-   // struct stat file_stat;
+    struct stat file_stat;
 
     if ((directory_stream = opendir(directory)) == NULL) {
        return -1;
     }
 
-    // !!! TODO: hoare doesn't support checking the file type via d_type. Need to stat.
+    // Iterate over all of the files in the current directory.
     while ((directory_entry = readdir(directory_stream)) != NULL) {
-        struct stat file_stat;
-        if (stat(directory_entry->d_name, &file_stat) == -1) {
+        // Build the path to the current file. That is, the directory we've
+        // iterated to, and /d_name (the name of the current file).
+        char path[4096];
+        snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
+        // Attempt to stat the file. 
+        if (stat(path, &file_stat) == -1) {
             return FILE_STAT_ERROR;
         }
+        // If this is a directory, iterate into it. 
         if (S_ISDIR(file_stat.st_mode)) {
-            char path[4096];
             // We don't need to iterate over the current directory, or the parent directory. This would
             // cause an infinite loop. Note that this can also happen with sym links.
             if (is_current_directory(directory_entry->d_name) || is_parent_directory(directory_entry->d_name)) {
                 continue;
             }
-            snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
             print_tree_entry(directory_entry, &file_stat, indent_space_count, program_options);
             list_directory(path, program_options, indent_space_count + program_options->space_count_indentation);
+        // Else, just print the details. 
         } else {
             print_tree_entry(directory_entry, &file_stat, indent_space_count, program_options);
         }
