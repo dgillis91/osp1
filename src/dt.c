@@ -13,6 +13,7 @@
 
 
 #define DIRECTORY_OPEN_ERROR -1
+#define FILE_STAT_ERROR -2
 
 
 int list_directory(char*, program_options_t*, int);
@@ -41,6 +42,9 @@ int main(int argc, char* argv[]) {
         if (list_result == DIRECTORY_OPEN_ERROR) {
             fprintf(stderr, "%s: Failed to open %s\n", argv[0], options->run_on);
         }
+        else if (list_result == FILE_STAT_ERROR) {
+            fprintf(stderr, "%s: Failed to stat file ", argv[0]);
+        }
         return EXIT_FAILURE;
     }
 
@@ -62,13 +66,18 @@ int list_directory(char* directory, program_options_t* program_options, int inde
     /* Method to print the directory tree.*/
     DIR* directory_stream;
     struct dirent* directory_entry;
+    struct stat file_stat;
 
     if ((directory_stream = opendir(directory)) == NULL) {
        return -1;
     }
 
+    // !!! TODO: hoare doesn't support checking the file type via d_type. Need to stat.
     while ((directory_entry = readdir(directory_stream)) != NULL) {
-        if (directory_entry->d_type == DT_DIR) {
+        if (stat(directory, &file_stat) == -1) {
+            return FILE_STAT_ERROR;
+        }
+        if (S_ISDIR(file_stat.st_mode)) {
             char path[4096];
             // We don't need to iterate over the current directory, or the parent directory. This would
             // cause an infinite loop. Note that this can also happen with sym links.
