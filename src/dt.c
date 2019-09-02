@@ -25,6 +25,9 @@ int is_parent_directory(char*);
 int is_current_directory(char*);
 
 
+int is_followable_link(struct stat*, int);
+
+
 int main(int argc, char* argv[]) {
     // Program options passed through the command line
     program_options_t* options = malloc_default_program_options();
@@ -84,8 +87,8 @@ int list_directory(char* directory, program_options_t* program_options, int inde
         if (stat(path, &file_stat) == -1) {
             return FILE_STAT_ERROR;
         }
-        // If this is a directory, iterate into it. 
-        if (S_ISDIR(file_stat.st_mode)) {
+        // If this is a directory, iterate into it. Only follow links if told to by caller. 
+        if (S_ISDIR(file_stat.st_mode) || is_followable_link(&file_stat, program_options->is_follow_links)) {
             // We don't need to iterate over the current directory, or the parent directory. This would
             // cause an infinite loop. Note that this can also happen with sym links.
             if (is_current_directory(directory_entry->d_name) || is_parent_directory(directory_entry->d_name)) {
@@ -103,10 +106,20 @@ int list_directory(char* directory, program_options_t* program_options, int inde
     return 0;
 }
 
+
 int is_current_directory(char* directory) {
     return (strcmp(directory, ".") == 0);
 }
 
+
 int is_parent_directory(char* directory) {
     return (strcmp(directory, "..") == 0);
+}
+
+
+int is_followable_link(struct stat* file_stat, int follow_links) {
+    if (!follow_links) {
+        return 0;
+    }
+    return S_ISLNK(file_stat->st_mode);
 }
