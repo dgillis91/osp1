@@ -12,14 +12,19 @@
 #include "../include/filedet.h"
 
 
-void list_directory(char*, program_options_t*, int);
+#define DIRECTORY_OPEN_ERROR -1
+
+
+int list_directory(char*, program_options_t*, int);
+
+
+int is_parent_directory(char*);
+
+
+int is_current_directory(char*);
 
 
 int main(int argc, char* argv[]) {
-    // Pointer to the file/directory we are currently examining.
-    struct dirent* direntp;
-    // Directory stream to iterate over the directory.
-    DIR* directory_stream;
     // Program options passed through the command line
     program_options_t* options = malloc_default_program_options();
     // validate that the malloc worked.
@@ -29,10 +34,15 @@ int main(int argc, char* argv[]) {
     }
     parse_options(argc, argv, options);
 
-    printf("optind: %d\n", optind);
-    printf("opt: %s\n", argv[optind]);
-
-    list_directory(options->run_on, options, options->space_count_indentation);
+    // Doing a nested if so I can add more excceptionary criteria with little repeat code.
+    int list_result;
+    if ((list_result = list_directory(options->run_on, options, 0)) != 0) {
+        free_program_options(&options);
+        if (list_result == DIRECTORY_OPEN_ERROR) {
+            fprintf(stderr, "%s: Failed to open %s\n", argv[0], options->run_on);
+        }
+        return EXIT_FAILURE;
+    }
 
     // Be a good neighbor.
     free_program_options(&options);
@@ -48,7 +58,39 @@ int main(int argc, char* argv[]) {
 }
 
 
-void list_directory(char* directory, program_options_t* program_options, int indent_space_count) {
+int list_directory(char* directory, program_options_t* program_options, int indent_space_count) {
     /* Method to print the directory tree.*/
-    return;
+    DIR* directory_stream;
+    struct dirent* directory_entry;
+
+    if ((directory_stream = opendir(directory)) == NULL) {
+       return -1;
+    }
+
+    while ((directory_entry = readdir(directory_stream)) != NULL) {
+        if (directory_entry->d_type == DT_DIR) {
+            char path[4096];
+            // We don't need to iterate over the current directory, or the parent directory. This would
+            // cause an infinite loop. Note that this can also happen with sym links.
+            if (strcmp(directory_entry->d_name, "..") == 0 || strcmp(directory_entry->d_name, ".") == 0) {
+                continue;
+            }
+            snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
+            printf("%*s%s\n", indent_space_count, "", directory_entry->d_name);
+            list_directory(path, program_options, indent_space_count + program_options->space_count_indentation);
+        } else {
+            printf("%*s%s\n", indent_space_count, "", directory_entry->d_name);
+        }
+    }
+    closedir(directory_stream);
+
+    return 0;
+}
+
+int is_current_directory(char* directory) {
+    return (strcmp(directory, ".") == 0);
+}
+
+int is_parent_directory(char* directory) {
+    return (strcmp(directory, "..") == 0);
 }
