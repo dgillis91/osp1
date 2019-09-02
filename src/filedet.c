@@ -4,6 +4,7 @@
 #include "../include/filedet.h"
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <stdio.h>
 
 #define MODE_COUNT 9
 mode_t MODES[MODE_COUNT] = {
@@ -14,6 +15,11 @@ mode_t MODES[MODE_COUNT] = {
 
 #define RWX_CHAR_COUNT 3
 char RWX_CHAR[RWX_CHAR_COUNT] = {'r', 'w', 'x'};
+
+
+void print_tree_entry(struct dirent* directory_entry, int indent, program_options_t* p_options) {
+    printf("%*c%s\n", indent, ' ', directory_entry->d_name);
+}
 
 
 void file_access_string(struct stat* file_stat, char* buffer) {
