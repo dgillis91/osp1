@@ -72,7 +72,7 @@ int list_directory(char* directory, program_options_t* program_options, int inde
             char path[4096];
             // We don't need to iterate over the current directory, or the parent directory. This would
             // cause an infinite loop. Note that this can also happen with sym links.
-            if (strcmp(directory_entry->d_name, "..") == 0 || strcmp(directory_entry->d_name, ".") == 0) {
+            if (is_current_directory(directory_entry->d_name) || is_parent_directory(directory_entry->d_name)) {
                 continue;
             }
             snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
