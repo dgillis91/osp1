@@ -28,6 +28,7 @@ mode_t MODES[MODE_COUNT] = {
     S_IROTH, S_IWOTH, S_IXOTH
 };
 
+// UNIX file permission characters.
 #define RWX_CHAR_COUNT 3
 char RWX_CHAR[RWX_CHAR_COUNT] = {'r', 'w', 'x'};
 
