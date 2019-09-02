@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include <pwd.h>
@@ -45,7 +46,7 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
 
     // Link count
     if (p_options->is_display_link_count) {
-        sprintf(link_count, "%d", file_stat->st_nlink);
+        sprintf(link_count, "%3d", file_stat->st_nlink);
     } else {
         strcpy(link_count, "");
     }
@@ -83,8 +84,27 @@ void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, in
         strcpy(time_string, "");
     }
 
-    printf("%*c%s %s %s %s %s %s %s\n", indent, ' ', directory_entry->d_name, 
-           permissions, link_count, username, groupname, file_size, time_string);
+    // Build the output
+    char detail_string[150];
+    snprintf(detail_string, 150, "%s %s %s %s %s %s",
+             permissions, link_count, username, groupname,
+             file_size, time_string);
+
+    char* pad_string = NULL;
+    int filename_length = strlen(directory_entry->d_name);
+    int sub = indent;
+    if (indent == 0) {
+        sub = 1;
+    }
+    int file_pad_length = 100 - filename_length - indent;
+    pad_string = malloc(sizeof(char) * file_pad_length);
+    snprintf(pad_string, file_pad_length, "%*c", file_pad_length, ' ');
+
+    //char filename_string[101];
+    //snprintf(filename_string, 100, "%s%*c", directory_entry->d_name, file_pad_length, ' ');
+
+    printf("%*c%s %s %s\n", indent, ' ', directory_entry->d_name, pad_string, detail_string);
+    free(pad_string);
 }
 
 
@@ -128,7 +148,7 @@ void pretty_file_size(char* buffer, long file_size) {
         strcpy(post_fix, "K");
         size_scaler = K_SIZE;
     } else {
-        strcpy(post_fix, "");
+        strcpy(post_fix, " ");
         size_scaler = 1;
     }
 
