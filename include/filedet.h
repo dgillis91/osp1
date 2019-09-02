@@ -9,7 +9,7 @@
 #include <dirent.h>
 #include <parse.h>
 
-void print_tree_entry(struct dirent*, int, program_options_t*);
+void print_tree_entry(struct dirent*, struct stat*, int, program_options_t*);
 
 
 void file_access_string(struct stat* file_stat, char* buffer);

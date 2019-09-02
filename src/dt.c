@@ -85,10 +85,10 @@ int list_directory(char* directory, program_options_t* program_options, int inde
                 continue;
             }
             snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
-            print_tree_entry(directory_entry, indent_space_count, program_options);
+            print_tree_entry(directory_entry, &file_stat, indent_space_count, program_options);
             list_directory(path, program_options, indent_space_count + program_options->space_count_indentation);
         } else {
-            print_tree_entry(directory_entry, indent_space_count, program_options);
+            print_tree_entry(directory_entry, &file_stat, indent_space_count, program_options);
         }
     }
     closedir(directory_stream);

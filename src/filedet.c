@@ -17,7 +17,7 @@ mode_t MODES[MODE_COUNT] = {
 char RWX_CHAR[RWX_CHAR_COUNT] = {'r', 'w', 'x'};
 
 
-void print_tree_entry(struct dirent* directory_entry, int indent, program_options_t* p_options) {
+void print_tree_entry(struct dirent* directory_entry, struct stat* file_stat, int indent, program_options_t* p_options) {
     printf("%*c%s\n", indent, ' ', directory_entry->d_name);
 }
 
