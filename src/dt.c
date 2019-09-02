@@ -86,10 +86,8 @@ int list_directory(char* directory, program_options_t* program_options, int inde
             }
             snprintf(path, sizeof(path), "%s/%s", directory, directory_entry->d_name);
             print_tree_entry(directory_entry, indent_space_count, program_options);
-            //printf("%*c%s\n", indent_space_count, ' ', directory_entry->d_name);
             list_directory(path, program_options, indent_space_count + program_options->space_count_indentation);
         } else {
-            //printf("%*c%s\n", indent_space_count, ' ', directory_entry->d_name);
             print_tree_entry(directory_entry, indent_space_count, program_options);
         }
     }
