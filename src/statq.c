@@ -19,6 +19,7 @@ stat_queue_node_t* malloc_new_node(stat_t* filestat, dirent_t* direntp) {
 
 void free_stat_queue_node(stat_queue_node_t* node) {
     /* Assumes node allocated via `malloc`. Note that direntp is not allocated.*/
+    // XXX: This will cause a memory leak. TODO: Fix.
     free(node->file_stat);
     free(node);
 }
