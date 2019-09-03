@@ -29,6 +29,9 @@ For:
 size is larger than 1M, indicate the size in MB with a suffix M; if the size is larger than 1G, indicate the size in GB with a suffix G.
 -l This option will be used to print information on the file as if the options tpiugs are all specified.
 
+## Remote Repository
+[GitHub](https://github.com/dgillis91/osp1)
+
 ## To Do
 - Refactor as necessary. 
 
