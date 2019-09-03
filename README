@@ -40,6 +40,11 @@ size is larger than 1M, indicate the size in MB with a suffix M; if the size is 
  I also don't know if C supports default args. I can look that up later. 
 - There is a decent amount of refactoring that can be done here. This would make the code easier to read (among other things). 
  Notably, `print_tree_entry` can be broken into **at least** two methods. 
+- There is a queue implemented, which at this point is nothing more than an artifact. It also has a few known issues. Regardless,
+ while the queue works, I chose to go with a recursive implementation. In my opinion, it's more legible.
+- The project wasn't particularly hard, it was just time consuming. Research was trivial, and coming up with ways to do things 
+ wasn't bad. I lost several hours getting stuck on small things, mostly involving improper use of pointers and strings. 
+ Once I got up to speed debugging in C again, those issues started taking less time. 
 
 ## References
 - [Getopt Examples](https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html)
