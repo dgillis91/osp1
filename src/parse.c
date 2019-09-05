@@ -11,7 +11,7 @@ void print_help_and_terminate(char* argv[]) {
            "    -h: Display help and exit.\n"
            "    -I: Number of spaces to use for indent.\n"
            "    -L: Follow sym links. Default false.\n"
-           "    -d: Print information on file type.\n", argv[0]);
+           "    -d: Show the time of last modification.\n", argv[0]);
     printf("    -g: Print the GID for the file.\n"
            "    -i: Print the number of links in the inode table.\n"
            "    -p: Print permission bits.\n"
